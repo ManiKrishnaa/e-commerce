@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Vegetable Items</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		/>
+		<style>
+			.card {
+				border: 1px solid #ccc;
+				border-radius: 8px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				transition: box-shadow 0.3s ease-in-out;
+				height: 100%;
+			}
+
+			.card:hover {
+				box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+			}
+
+			.card img {
+				border-top-left-radius: 8px;
+				border-top-right-radius: 8px;
+				width: 100%;
+				height: 200px;
+				object-fit: contain;
+			}
+
+			.card-body {
+				padding: 10px 20px;
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.card-title {
+				font-size: 1.2rem;
+				margin-bottom: auto;
+			}
+
+			.card-text {
+				color: #666;
+				margin-bottom: auto;
+			}
+
+			.btn {
+				margin-top: auto;
+				text-align: center;
+			}
+
+			.btn button {
+				background-color: #007bff;
+				color: #fff;
+				border: none;
+				border-radius: 4px;
+				padding: 6px 12px;
+				cursor: pointer;
+				transition: background-color 0.3s ease-in-out;
+			}
+
+			.btn button:hover {
+				background-color: #0056b3;
+			}
+
+			.btn i {
+				margin-right: 5px;
+			}
+
+			/* Overlay styles */
+			#overlay {
+				display: none;
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0, 0, 0, 0.5);
+				z-index: 100;
+			}
+
+			#overlay-content {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background-color: #fff;
+				padding: 20px;
+				border-radius: 8px;
+				width: 300px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<%- include('navbar') %> <% if (alertMessage) { %>
+		<script>
+			alert("item added to cart");
+		</script>
+		<% } %>
+		<h1 style="text-align: center">Milk - Nondiary Products</h1>
+		<br /><br />
+		<% if(adminstatus) { %>
+		<div class="container h-100">
+			<div class="row row-cols-1 row-cols-md-4 g-4">
+				<% for (let i = 0; i < milk.length; i++) { %>
+				<div class="col">
+					<div class="card h-100">
+						<img
+							class="card-img-top"
+							src="<%= milk[i].imageUrl %>"
+							alt="<%= milk[i].name %>"
+						/>
+						<div class="card-body">
+							<h2 class="card-title text-center"><%= milk[i].name %></h2>
+							<p class="card-text text-center">
+								Quantity: <%= milk[i].quantity %>
+							</p>
+							<h5 class="text-center">Rs <%= milk[i].price.toFixed(2) %></h5>
+							<div id="overlay">
+								<div id="overlay-content">
+									<!-- Update form -->
+									<form id="update-form" action="/update-item" method="POST">
+										<input
+											type="hidden"
+											name="itemid"
+											id="update-itemid"
+											value="<%= milk[i]._id%>"
+										/>
+										<input
+											type="hidden"
+											name="itemcategory"
+											id="update-itemcategory"
+											value="milks"
+										/>
+										<div style="margin-bottom: 10px">
+											<label for="update-itemName">Item Name:</label>
+											<input
+												type="text"
+												name="updateitemName"
+												id="update-itemName"
+												style="width: 100%"
+												value="<%= milk[i].name %>"
+											/>
+										</div>
+										<div style="margin-bottom: 10px">
+											<label for="update-imageurl">Image URL:</label>
+											<input
+												type="text"
+												name="updateimageurl"
+												id="update-imageurl"
+												style="width: 100%"
+												value="<%= milk[i].imageUrl %>"
+											/>
+										</div>
+										<div style="margin-bottom: 10px">
+											<label for="update-quantity">Quantity:</label>
+											<input
+												type="text"
+												name="updatequantity"
+												id="update-quantity"
+												style="width: 100%"
+												value="<%= milk[i].quantity %>"
+											/>
+										</div>
+										<div style="margin-bottom: 10px">
+											<label for="update-price">Price:</label>
+											<input
+												type="text"
+												name="updateprice"
+												id="update-price"
+												style="width: 100%"
+												value="<%= milk[i].price %>"
+											/>
+										</div>
+										<button
+											type="submit"
+											style="
+												background-color: #1d1d1d;
+												color: white;
+												border: none;
+												border-radius: 4px;
+												padding: 6px 12px;
+												cursor: pointer;
+												transition: background-color 0.3s ease-in-out;
+												width: 100%;
+											"
+										>
+											Save
+										</button>
+									</form>
+								</div>
+							</div>
+							<button type="button" class="btn btn-secondary update-button">
+								Update <i class="fas fa-edit"></i>
+							</button>
+
+							<!-- Delete form -->
+							<form action="/delete-item" method="POST">
+								<input type="hidden" name="itemid" value="<%= milk[i]._id %>" />
+								<input type="hidden" name="itemcategory" value="milks" />
+								<button type="submit" class="btn btn-danger">
+									Delete <i class="fas fa-trash-alt"></i>
+								</button>
+							</form>
+
+							<!-- Add to cart form -->
+							<form action="/add-to-cart" method="POST">
+								<input type="hidden" name="id" value="<%= milk[i]._id %>" />
+								<input
+									type="hidden"
+									name="quantity"
+									value="<%= milk[i].quantity %>"
+								/>
+								<input
+									type="hidden"
+									name="price"
+									value="<%= milk[i].price.toFixed(2) %>"
+								/>
+								<input type="hidden" name="name" value="<%= milk[i].name %>" />
+								<button type="submit" class="btn btn-primary">
+									Add <i class="fas fa-cart-plus"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<% } %> <% if(adminloginstatus) { %>
+				<div class="col">
+					<div class="card h-100">
+						<div class="card-body">
+							<div class="btn">
+								<button id="btn-1">Add a new item</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<% } %>
+			</div>
+		</div>
+
+		<% } else { %>
+		<div class="container h-100">
+			<div class="row row-cols-1 row-cols-md-4 g-4">
+				<% for (let i = 0; i < milk.length; i++) { %>
+				<div class="col">
+					<div class="card h-100">
+						<img
+							class="card-img-top"
+							src="<%= milk[i].imageUrl %>"
+							alt="<%= milk[i].name %>"
+						/>
+						<div class="card-body">
+							<h2 class="card-title text-center"><%= milk[i].name %></h2>
+							<p class="card-text text-center">
+								Quantity: <%= milk[i].quantity %>
+							</p>
+							<h5 class="text-center">Rs <%= milk[i].price.toFixed(2) %></h5>
+							<form action="/add-to-cart" method="POST">
+								<input type="hidden" name="id" value="<%= milk[i]._id %>" />
+								<input
+									type="hidden"
+									name="quantity"
+									value="<%= milk[i].quantity %>"
+								/>
+								<input
+									type="hidden"
+									name="price"
+									value="<%= milk[i].price.toFixed(2) %>"
+								/>
+								<input type="hidden" name="name" value="<%= milk[i].name %>" />
+
+								<div class="btn">
+									<button type="submit">
+										Add <i class="fas fa-cart-plus"></i>
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<% } %> <% if(adminloginstatus) { %>
+				<div class="col">
+					<div class="card h-100">
+						<div class="card-body">
+							<div class="btn">
+								<button id="btn-1">Add a new item</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<% } %>
+			</div>
+		</div>
+		<% } %> <%- include('footer') %>
+
+		<script>
+			document.querySelectorAll(".update-button").forEach(function (button) {
+				button.addEventListener("click", function () {
+					var card = this.closest(".card");
+					var overlayContent = card.querySelector("#overlay-content");
+					document.getElementById("overlay").style.display = "block";
+					document.getElementById("update-itemid").value =
+						card.querySelector("[name=itemid]").value;
+					document.getElementById("update-itemName").value = card.querySelector(
+						"[name=updateitemName]"
+					).value;
+					document.getElementById("update-imageurl").value = card.querySelector(
+						"[name=updateimageurl]"
+					).value;
+					document.getElementById("update-quantity").value = card.querySelector(
+						"[name=updatequantity]"
+					).value;
+					document.getElementById("update-price").value =
+						card.querySelector("[name=updateprice]").value;
+				});
+			});
+
+			window.addEventListener("click", function (event) {
+				if (event.target == document.getElementById("overlay")) {
+					document.getElementById("overlay").style.display = "none";
+				}
+			});
+
+			document.addEventListener("keydown", function (event) {
+				if (event.key === "Escape") {
+					document.getElementById("overlay").style.display = "none";
+				}
+			});
+
+			const clickButton = document.getElementById("btn-1");
+			clickButton.addEventListener("click", () => {
+				window.location.href = "/additem";
+			});
+		</script>
+	</body>
+</html>

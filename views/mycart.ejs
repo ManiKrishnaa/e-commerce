@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Cart</title>
+    <style>
+        table {
+            width: 100%;
+            padding: 10px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: none;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #2B4A37;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1D3226;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('navbar') %>
+    <h1 style="text-align: center; color: #1d1d1d; padding-bottom: 10px;">Cart</h1>
+    <% if (cartdata && cartdata.length > 0) { %>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Quantity Level</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% cartdata.forEach(item => { %>
+            <tr>
+                <td><%= item.itemname %></td>
+                <td><%= item.itemquantity %></td>
+                <td>
+                    <div>
+                        <button type="button" onclick="decrementQuantity('<%= item._id %>')">-</button>
+                        <span id="quantity_<%= item._id %>"><%= item.itemquantitylevel %></span>
+                        <button type="button" onclick="incrementQuantity('<%= item._id %>')">+</button>
+                    </div>
+                </td>
+                <td><%= parseFloat(item.itemprice).toFixed(2) %></td>
+                <td id="total_<%= item._id %>"><%= (item.itemquantitylevel * parseFloat(item.itemprice)).toFixed(2) %></td>
+                <td>
+                    <form action="/deleteitem" method="post">
+                        <input type="hidden" name="itemid" value="<%= item._id %>">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <% }) %>
+            <tr>
+                <td colspan="4" style="text-align:right; font-weight:bold;">Final Total:</td>
+                <td id="finalTotal">0.00</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <center>
+        <form action="/checkout" method="post">
+            <% cartdata.forEach(item => { %>
+            <input type="hidden" name="itemname" value="<%= item.itemname %>">
+            <input type="hidden" name="itemquantitylevel" id="quantityLevel_<%= item._id %>" value="<%= item.itemquantitylevel %>">
+            <input type="hidden" name="itemprice" value="<%= item.itemprice %>">
+            <% }) %>
+            <button type="submit">Place Order</button>
+        </form>
+    </center>
+    
+    <% } else { %>
+    <p style="text-align: center; font-size: 24px; color: #1d1d1d; padding-top: 30px;">Cart is empty!</p>
+    <% } %>
+
+    <script>
+        function incrementQuantity(itemId) {
+            var quantityElement = document.getElementById("quantity_" + itemId);
+            var currentQuantity = parseInt(quantityElement.innerText);
+            var newQuantity = currentQuantity + 1;
+            quantityElement.innerText = newQuantity;
+            updateRowTotal(itemId, newQuantity);
+            updateHiddenField(itemId, newQuantity);
+        }
+
+        function decrementQuantity(itemId) {
+            var quantityElement = document.getElementById("quantity_" + itemId);
+            var currentQuantity = parseInt(quantityElement.innerText);
+        
+            if (currentQuantity > 1) {
+                var newQuantity = currentQuantity - 1;
+                quantityElement.innerText = newQuantity;
+                updateRowTotal(itemId, newQuantity);
+                updateHiddenField(itemId, newQuantity);
+            }
+        }
+
+        function updateRowTotal(itemId, newQuantity) {
+            var row = document.querySelector("#quantity_" + itemId).closest("tr");
+            var priceElement = row.querySelector("td:nth-child(4)");
+            var price = parseFloat(priceElement.innerText);
+            var newTotal = newQuantity * price;
+            var totalElement = document.getElementById("total_" + itemId);
+            totalElement.innerText = newTotal.toFixed(2);
+            updateFinalTotal();
+        }
+
+        function updateFinalTotal() {
+            const totalElements = document.querySelectorAll("[id^='total_']");
+            let finalTotal = 0;
+            totalElements.forEach(totalElement => {
+                finalTotal += parseFloat(totalElement.innerText);
+            });
+            
+            const finalTotalElement = document.getElementById("finalTotal");
+            finalTotalElement.innerText = finalTotal.toFixed(2);
+        }
+
+        function updateHiddenField(itemId, newQuantity) {
+            var hiddenField = document.getElementById("quantityLevel_" + itemId);
+            hiddenField.value = newQuantity;
+        }   
+        window.onload = function() {
+            updateFinalTotal();
+        };
+    </script>
+</body>
+</html>

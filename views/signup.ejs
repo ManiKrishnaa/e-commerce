@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+		* {
+		padding: 0;
+		margin: 0;
+		box-sizing: border-box;
+		font-family: 'Book Antiqua', serif;
+	}
+
+	body {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.main {
+		display: flex;
+	}
+
+
+	.signup-form {
+		max-width: 500px;
+		width: 100%;
+		padding: 50px;
+		border-radius: 50px;
+		border: 2px solid #1D3226;
+		background-color: white;
+		box-shadow: 0 5px 10px rgba(55, 45, 45, 0.2);
+		height: 600px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.signup-form h2 {
+		font-size: 25px;
+		text-align: center;
+		font-weight: bold;
+		color: #1D3226;
+		margin-bottom: 20px;
+	}
+
+	.signup-form form .input-box {
+		width:400px;
+		border-radius: 20px;
+		margin-bottom: 20px;
+	}
+
+	.signup-form form .input-box input {
+		width: 100%;
+		height: 50px;
+		outline: none;
+		padding: 0 10px;
+		font-size: 16px;
+		border: 1px solid #ccc;
+		border-radius: 15px;
+		transition: border-color 0.3s ease;
+	}
+
+	.signup-form form .input-box input:focus,
+	.signup-form form .input-box input:valid {
+		border-color: #1D3226;
+	}
+
+	.signup-form form .input-box.button input {
+		height: 35px; 
+		width: 80%;
+		color: white;
+		font-weight: bold;
+		margin-left: 40px;
+		border: none;
+		background-color: #1D3226;
+		border-radius: 15px;
+		cursor: pointer;
+		transition: background-color 0.3s ease;
+	}
+
+	.signup-form form .input-box.button input:hover {
+		background: gray;
+	}
+
+	form .text h3 {
+		color: #333;
+		width: 100%;
+		text-align: center;
+	}
+
+	form .text h3 a {
+		color: #4070f4;
+		text-decoration: none;
+	}
+
+	.signup-form form .input-box {
+		position: relative;
+	}
+
+	.signup-form form .input-box .password-input {
+		position: relative;
+	}
+
+	.signup-form form .input-box .toggle-password {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		right: 10px;
+		cursor: pointer;
+	}
+
+	.signup-form form .input-box .toggle-password img {
+		width: 20px;
+		height: auto;
+	}
+
+	</style>
+    <title>Signup page</title>
+</head>
+<body>
+    <div class="main">
+		<div class="signup-form">
+			<h2>Sign-Up</h2>
+			<% if(emailexists) { %>
+				<p style="color: red;">Email already exist !</p>
+			<% } %>
+			<% if(mobileexists) { %>
+				<p style="color: red;">Mobile already exist !</p>
+			<% } %>
+			<form id="signup-form" action="/signup" method="post" onsubmit="return validateForm()">
+				<div class="input-box">
+					<input
+						type="text"
+						name="name"
+						id="name"
+						placeholder="Name"
+						required
+					/>
+				</div>
+				<div class="input-box">
+					<input
+						type="email"
+						name="email"
+						id="email"
+						placeholder="E-mail"
+						required
+					/>
+				</div>
+				<div class="input-box">
+					<input
+						type="text"
+						name="mobile"
+						id="mobile"
+						placeholder="Mobile Number"
+						required
+					/>
+				</div>
+				<div class="input-box">
+					<input
+						type="text"
+						name="address"
+						id="address"
+						placeholder="Address"
+						required
+					/>
+				</div>
+				<div class="input-box">
+					<div class="password-input">
+						<input
+							type="password"
+							name="password"
+							id="password"
+							placeholder="password"
+							required
+						/>
+						<span class="toggle-password" onclick="togglePasswordVisibility('password')">
+							<img src="/images/eye-slash-icon.png" alt="Toggle password visibility" />
+						</span>
+					</div>
+				</div>
+				<div class="input-box">
+					<div class="password-input">
+						<input
+							type="password"
+							name="confirm_password"
+							id="confirm_password"
+							placeholder="Confirm Password"
+							required
+						/>
+						<span class="toggle-password" onclick="togglePasswordVisibility('confirm_password')">
+							<img src="/images/eye-slash-icon.png" alt="Toggle password visibility" />
+						</span>
+					</div>
+				</div>
+				<div class="input-box button">
+					<input type="submit" value="Sign Up" />
+				</div>
+				<div class="text">
+					<h3>Already have an Account? <a href="/login"><strong>login</strong></a></h3>
+				</div>
+			</form>
+		</div>
+	</div>
+
+    <script>
+        function togglePasswordVisibility(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = passwordInput.nextElementSibling;
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleIcon.innerHTML = '<img src="/images/eye-icon.png" alt="Hide password" />';
+            } else {
+                passwordInput.type = "password";
+                toggleIcon.innerHTML = '<img src="/images/eye-slash-icon.png" alt="Show password" />';
+            }
+        }
+
+        function validateForm() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+			const mobile = document.getElementById('mobile').value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return false; 
+            }
+
+			if (mobile.length !== 10 || isNaN(mobile)) {
+				alert("Mobile number must be exactly 10 digits long and contain only numbers!");
+				return false;
+			}
+
+			return true; 
+        }
+    </script>
+</body>
+</html>

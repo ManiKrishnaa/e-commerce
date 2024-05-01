@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            color: #333;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+            color: #333;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            table {
+                font-size: 14px;
+            }
+            .total {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Summary</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Quantity Level</th>
+                    <th>Price</th>
+                    <th>Total Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orderbill.forEach(order => { %>
+                    <tr>
+                        <td><%= order.itemName %></td>
+                        <td><%= order.itemQuantityLevel %></td>
+                        <td>Rs <%= order.itemPrice %></td>
+                        <td>Rs <%= order.totalCost.toFixed(2) %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <div class="total">
+            <input type="hidden" id="orderbillData" value='<%= JSON.stringify(orderbill) %>'>
+            <h1 id="totalAmount"></h1>
+        </div>        
+    </div>
+
+    <script>
+        function calculateTotal(orderbill) {
+            let total = 0;
+            orderbill.forEach(order => {
+                total += parseFloat(order.totalCost);
+            });
+            return total.toFixed(2);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var orderbillData = JSON.parse(document.getElementById("orderbillData").value);
+            document.getElementById("totalAmount").innerText = "Rs " + calculateTotal(orderbillData);
+        });
+    </script>
+</body>
+</html>

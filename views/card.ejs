@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Card Layout with + Button</title>
+		<style>
+		.card {
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			transition: box-shadow 0.3s ease-in-out;
+			height: 200px; 
+		}
+
+		.card:hover {
+			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+		}
+
+		.card-body {
+			padding: 20px; 
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.btn button {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			border-radius: 50%; 
+			width: 50px; 
+			height: 50px; 
+			font-size: 24px;
+			cursor: pointer;
+			transition: background-color 0.3s ease-in-out;
+		}
+
+		.btn button:hover {
+			background-color: #0056b3;
+		}
+		@media screen and (max-width: 768px) {
+			.card {
+				height: auto;
+			}
+
+			.card-body {
+				padding: 10px; 
+			}
+
+			.btn button {
+				width: 40px; 
+				height: 40px; 
+				font-size: 20px; 
+			}
+		}
+
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<div class="card-body">
+				<div class="btn">
+					<button>+</button>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

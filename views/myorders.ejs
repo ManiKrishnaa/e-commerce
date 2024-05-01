@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .order {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .order-details {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Orders</h1>
+        <% if (orderHistory.length === 0) { %>
+            <p>No orders found.</p>
+        <% } else { %>
+            <% orderHistory.forEach(order => { %>
+                <div class="order">
+                    <div class="order-details">
+                        <p><strong>Order ID:</strong> <%= order.orderId %></p>
+                        <p><strong>Date:</strong> <%= order.transactionDate.toDateString() %></p>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (order.orders && order.orders.length > 0) { %>
+                                <% order.orders.forEach(item => { %>
+                                    <tr>
+                                        <td><%= item.itemName %></td>
+                                        <td><%= item.itemQuantityLevel %></td>
+                                        <td>Rs <%= item.itemPrice.toFixed(2) %></td>
+                                        <td>Rs <%= item.totalCost.toFixed(2) %></td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="4">No items found for this order.</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
+</body>
+</html>

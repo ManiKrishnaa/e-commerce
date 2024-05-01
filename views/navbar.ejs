@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Navbar</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			.navbar {
+				background-color: white;
+				color: #1d3226;
+				display: flex;
+				align-items: center;
+				padding: 10px;
+				height: 70px;
+			}
+
+			.navbar img {
+				width: 100px;
+				height: auto;
+				margin-right: 20px;
+			}
+			.search-container {
+				display: flex;
+				align-items: center;
+			}
+
+			.search-bar {
+				width: 200px;
+				padding: 8px;
+				margin-right: 8px;
+				border-radius: 4px;
+				border: 2px solid #1d3226;
+			}
+
+			#searchbtn {
+				padding: 8px;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				background-color: #1d3226;
+				color: white;
+			}
+
+			#searchbtn:hover {
+				background-color: grey;
+				color: white;
+			}
+
+			.navbar ul {
+				list-style-type: none;
+				display: flex;
+				margin-left: auto;
+			}
+
+			.navbar li {
+				margin-right: 10px;
+			}
+
+			.navbar li:last-child {
+				margin-right: 0;
+			}
+
+			.navbar a {
+				color: #1d3226;
+				text-decoration: none;
+				padding: 8px 15px;
+				border-radius: 5px;
+			}
+
+			.navbar a:hover {
+				background-color: #1d3226;
+				color: white;
+			}
+
+			.dropdown {
+				position: relative;
+				display: inline-block;
+			}
+
+			.dropdown-content {
+				display: none;
+				position: absolute;
+				background-color: #2b4a37;
+				min-width: 120px;
+				z-index: 100;
+				border-radius: 5px;
+			}
+
+			.dropdown-content a {
+				color: #fff;
+				padding: 8px 15px;
+				text-decoration: none;
+				display: block;
+			}
+
+			.dropdown-content a:hover {
+				background-color: #1d3226;
+				color: white;
+			}
+
+			.dropdown:hover .dropdown-content {
+				display: block;
+			}
+			#profileid {
+				color: #1d3226;
+			}
+			#profileid:hover {
+				color: white;
+			}
+			@media only screen and (max-width: 600px) {
+  /* Adjustments for screens smaller than 600px */
+  .navbar {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .navbar img {
+    margin: 10px auto; /* Center the logo */
+  }
+
+  .search-container {
+    margin-bottom: 10px;
+  }
+
+  .search-bar {
+    width: 100%; /* Make search bar full width */
+    margin: 0;
+  }
+
+  .navbar ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar li {
+    margin: 5px 0; /* Add space between list items */
+  }
+
+  .dropdown {
+    position: static; /* Remove dropdown positioning */
+  }
+
+  .dropdown-content {
+    display: none; /* Hide dropdown content initially */
+    position: static; /* Remove absolute positioning */
+    background-color: transparent; /* Make background transparent */
+    box-shadow: none; /* Remove dropdown shadow */
+  }
+
+  .dropdown-content a {
+    color: #1d3226; /* Set text color to match navbar color */
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block; /* Show dropdown content on hover */
+  }
+}
+		</style>
+	</head>
+	<body>
+		<div class="navbar">
+			<img src="/images/logo.png" alt="Logo" />
+			<form action="/search" method="GET">
+				<div class="search-container">
+					<input type="text" class="search-bar" placeholder="Search..." />
+					<button type="submit" id="searchbtn">Search</button>
+				</div>
+			</form>
+
+			<ul>
+				<% if(adminstatus) { %>
+				<li><a href="/adminhome">Home</a></li>
+				<li><a href="/logout">logout</a></li>
+				<% }else if(loginstatus) { %>
+				<li><a href="/home">Home</a></li>
+				<li class="dropdown">
+					<a id="profileid">Profile</a>
+					<div class="dropdown-content">
+						<a href="/editprofile">My Profile</a>
+						<a href="/mycart">My Cart</a>
+						<a href="/myorders">My Orders</a>
+					</div>
+				</li>
+				<li><a href="/logout">logout</a></li>
+				<% }else{ %>
+				<li><a href="/home">Home</a></li>
+				<li class="dropdown">
+					<a>login</a>
+					<div class="dropdown-content">
+						<a href="/adminlogin">Admin Login</a>
+						<a href="/login">user login</a>
+					</div>
+				</li>
+				<li><a href="/signup">Signup</a></li>
+				<% } %>
+			</ul>
+		</div>
+	</body>
+</html>

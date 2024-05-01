@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<style>
+			* {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: "Book Antiqua", serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f2f2f2;
+        }
+
+        .login-form {
+            width: auto;
+            padding: 20px;
+            border: 2px solid #1D3226;
+            border-radius: 20px;
+            background-color: white;
+            box-shadow: 0 5px 10px rgba(55, 45, 45, 0.2);
+        }
+
+        .login-form h2 {
+            font-size: 25px;
+            text-align: center;
+            font-weight: bold;
+            color: #1D3226;
+            margin-bottom: 20px;
+        }
+
+        .login-form form .input-box {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .login-form form .input-box input {
+            width: 100%;
+            height: 50px;
+            outline: none;
+            padding: 0 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-form form .input-box.button input {
+            height: 40px;
+            width: 100%;
+            color: white;
+            font-weight: bold;
+            border: none;
+            background-color: #1D3226;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-form form .input-box.button input:hover {
+            background: gray;
+        }
+
+        .login-form form .input-box .toggle-password {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .login-form form .input-box .toggle-password img {
+            width: 40px;
+            height: auto;
+        }
+
+        @media screen and (max-width: 768px) {
+            .login-form {
+                padding: 15px;
+            }
+
+            .login-form h2 {
+                font-size: 20px;
+            }
+
+            .login-form form .input-box input {
+                height: 40px;
+            }
+
+            .login-form form .input-box.button input {
+                height: 35px;
+            }
+        }
+		</style>
+		<title>Login</title>
+	</head>
+	<body>
+		<div class="main">
+		<div class="login-form">
+			<h2>Login</h2>
+            <% if(authorisationerror) { %>
+                <script>
+                    alert("please login in first !! ");
+                </script>
+            <% } %>
+			<% if(signupstatus) { %>
+				<script>
+                    alert("user login successfull !");
+                </script>
+            <% } %>
+			<% if(loginerror) { %>
+				<script>
+                    alert("invalid credintials !");
+                </script>
+			<% } %>
+			<form action="/login" method="post">
+				<div class="input-box">
+					<input
+						type="email"
+						name="email"
+						id="email"
+						placeholder="email"
+						required
+					/>
+				</div>
+				<div class="input-box">
+					<input
+						type="password"
+						name="password"
+						id="password"
+						placeholder="password"
+						required
+					/>
+				</div>
+				<div class="input-box button">
+					<input type="submit" value="Login" />
+				</div>
+			</form>
+            <p style="text-align: center;">Admin Login <a href="/adminlogin" style="text-decoration: none;color: #1d1d1d;"><strong>admin</strong></a></p>
+			<p style="text-align: center;">Don't have an account <a href="/signup" style="text-decoration: none;color: #1d1d1d;"><strong>signup</strong></a></p>
+		</div>
+
+		<script>
+			function togglePasswordVisibility(inputId) {
+				const passwordInput = document.getElementById(inputId);
+				const toggleIcon = passwordInput.nextElementSibling;
+				if (passwordInput.type === "password") {
+					passwordInput.type = "text";
+					toggleIcon.innerHTML =
+						'<img src="/images/eye-icon.png" alt="Hide password" />';
+				} else {
+					passwordInput.type = "password";
+					toggleIcon.innerHTML =
+						'<img src="/images/eye-slash-icon.png" alt="Show password" />';
+				}
+			}
+
+			function validateForm() {
+				return true; 
+			}
+		</script>
+	</body>
+</html>
