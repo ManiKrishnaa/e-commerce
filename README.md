@@ -9,4 +9,4 @@ https://e-commerce-project-7tb6.onrender.com/
 
 # Team Members
 
-1.Sudheer vobilisetty, 2. Mani krishna
+1.Mani Krishna , 2.Sudheer
