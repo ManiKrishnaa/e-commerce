@@ -42,7 +42,7 @@ app.use(
 );
 
 mongoose
-	.connect("mongodb+srv://manikrishna9970:manikrishna9970@nani.8rxselx.mongodb.net")
+	.connect("mongodb+srv://userbusy0198:userbusy@cluster0.1tijp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 	.then(() => {
 		console.log("MongoDB connected");
 	})
